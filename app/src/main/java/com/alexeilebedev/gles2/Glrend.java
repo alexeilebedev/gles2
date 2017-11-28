@@ -52,8 +52,8 @@ public class Glrend implements GLSurfaceView.Renderer {
         drawListBuffer.put(drawOrder);
         drawListBuffer.position(0);
 
-        _vshader = Glutil.compileShaderX(GLES20.GL_VERTEX_SHADER,Assets.loadAsset(_view._home,"vshader.txt"));
-        _fshader = Glutil.compileShaderX(GLES20.GL_FRAGMENT_SHADER,Assets.loadAsset(_view._home,"fshader.txt"));
+        _vshader = Glutil.compileShaderX(GLES20.GL_VERTEX_SHADER,Glutil.loadAsset(_view._home,"vshader.txt"));
+        _fshader = Glutil.compileShaderX(GLES20.GL_FRAGMENT_SHADER,Glutil.loadAsset(_view._home,"fshader.txt"));
         _prog = Glutil.compileProg(_vshader, _fshader);
     }
 

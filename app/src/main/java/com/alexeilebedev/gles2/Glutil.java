@@ -2,6 +2,7 @@ package com.alexeilebedev.gles2;
 
 import android.opengl.GLES20;
 
+// standard GLES utilities class
 public class Glutil {
     public static int compileShaderX(int type, String text) {
         int ret = GLES20.glCreateShader(type);

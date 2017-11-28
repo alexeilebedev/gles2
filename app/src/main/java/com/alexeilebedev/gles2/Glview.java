@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 public class Glview extends GLSurfaceView {
     Home _home;
     Glrend _glrend;
+    boolean _buttondown = false;
 
     Glview(Home home) {
         super(home);
@@ -26,9 +27,11 @@ public class Glview extends GLSurfaceView {
             case MotionEvent.ACTION_BUTTON_PRESS:
                 break;
             case MotionEvent.ACTION_DOWN:
+                _buttondown = true;
                 invalidate = true;
                 break;
             case MotionEvent.ACTION_UP:
+                _buttondown = false;
                 break;
         }
         if (invalidate) {

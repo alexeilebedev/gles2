@@ -10,13 +10,23 @@ public class Glview extends GLSurfaceView {
 
     Glview(Home home) {
         super(home);
-        _home=home;
+        _home = home;
         setEGLContextClientVersion(2);
         _glrend = new Glrend(this);
         setRenderer(_glrend);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
+    public void autozoom() {
+        if (_buttondown) {
+            _glrend._zoom *= 1.05f;
+        }
+    }
+
+    public void endzoom() {
+        _glrend._zoom = 1.f;
+    }
+    
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         boolean invalidate = false;
@@ -31,6 +41,7 @@ public class Glview extends GLSurfaceView {
                 invalidate = true;
                 break;
             case MotionEvent.ACTION_UP:
+                endzoom();
                 _buttondown = false;
                 break;
         }

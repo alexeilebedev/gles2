@@ -3,8 +3,6 @@ package com.alexeilebedev.gles2;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
@@ -18,8 +16,8 @@ public class Glrend implements GLSurfaceView.Renderer {
     float _Y = 0.0f;
     Glview _view;
     int _vshader, _fshader, _prog;
-    FloatBuffer vertexBuffer;
-    ShortBuffer drawListBuffer;
+    FloatBuffer _vbuf;
+    ShortBuffer _drawlist;
     static float squareCoords[] = {
             -1.0f,  1.0f, 0.0f,   // top left
             -1.0f, -1.0f, 0.0f,   // bottom left
@@ -30,28 +28,13 @@ public class Glrend implements GLSurfaceView.Renderer {
 
     Glrend(Glview view) {
         _view=view;
-
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 0.9f);
-        // initialize vertex byte buffer for shape coordinates
-        // (# of coordinate values * 4 bytes per float)
-        ByteBuffer bb = ByteBuffer.allocateDirect(squareCoords.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(squareCoords);
-        vertexBuffer.position(0);
-
-        // initialize byte buffer for the draw list
-        // (# of coordinate values * 2 bytes per short)
-        ByteBuffer dlb = ByteBuffer.allocateDirect(drawOrder.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        drawListBuffer = dlb.asShortBuffer();
-        drawListBuffer.put(drawOrder);
-        drawListBuffer.position(0);
-
+        _vbuf = Glutil.toFloatBuffer(squareCoords);
+        _drawlist = Glutil.toShortBuffer(drawOrder);
         _vshader = Glutil.compileShaderX(GLES20.GL_VERTEX_SHADER,Glutil.loadAsset(_view._home,"vshader.txt"));
         _fshader = Glutil.compileShaderX(GLES20.GL_FRAGMENT_SHADER,Glutil.loadAsset(_view._home,"fshader.txt"));
         _prog = Glutil.compileProg(_vshader, _fshader);
@@ -88,12 +71,12 @@ public class Glrend implements GLSurfaceView.Renderer {
         GLES20.glVertexAttribPointer(
                 pos_handle, coords_per_vertex,
                 GLES20.GL_FLOAT, false,
-                vertex_stride, vertexBuffer);
+                vertex_stride, _vbuf);
 
         // Draw a square
         GLES20.glDrawElements(
                 GLES20.GL_TRIANGLES, drawOrder.length,
-                GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+                GLES20.GL_UNSIGNED_SHORT, _drawlist);
 
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(pos_handle);

@@ -6,16 +6,13 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Home extends AppCompatActivity {
     Glview _glview;
     // clock task
     class Task extends TimerTask {
         @Override public void run() {
             _glview.requestRender();
-            if (_glview._buttondown) {
-                _glview._glrend._zoom *= 1.05f;
-            }
+            _glview.autozoom();
         }
     }
     Task _task;

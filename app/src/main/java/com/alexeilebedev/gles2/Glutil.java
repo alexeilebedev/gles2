@@ -5,6 +5,10 @@ import android.opengl.GLES20;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 // standard GLES utilities class
 public class Glutil {
@@ -46,6 +50,7 @@ public class Glutil {
         }
         return prog;
     }
+
     public static String loadAsset(Context ctx, String filename) {
         BufferedReader reader = null;
         StringBuilder builder = new StringBuilder();
@@ -65,6 +70,24 @@ public class Glutil {
         } catch (Exception e){
         }
         return builder.toString();
+    }
+
+    public static FloatBuffer toFloatBuffer(float[] ary) {
+        ByteBuffer bb = ByteBuffer.allocateDirect(ary.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        FloatBuffer ret = bb.asFloatBuffer();
+        ret.put(ary);
+        ret.position(0);
+        return ret;
+    }
+
+    public static ShortBuffer toShortBuffer(short[] ary) {
+        ByteBuffer bb = ByteBuffer.allocateDirect(ary.length * 2);
+        bb.order(ByteOrder.nativeOrder());
+        ShortBuffer ret = bb.asShortBuffer();
+        ret.put(ary);
+        ret.position(0);
+        return ret;
     }
 
 }

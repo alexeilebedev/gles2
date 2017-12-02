@@ -6,6 +6,7 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// Home view
 public class Home extends AppCompatActivity {
     Glview _glview;
     // clock task
@@ -25,7 +26,7 @@ public class Home extends AppCompatActivity {
         Timer timer = new Timer(true);
         _task=new Task();
         // re-render every 50 milliseconds
-        timer.scheduleAtFixedRate(_task,0,50);
+        timer.scheduleAtFixedRate(_task,0,20);
     }
     @Override
     protected void onResume() {

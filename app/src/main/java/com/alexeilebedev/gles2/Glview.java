@@ -3,6 +3,7 @@ package com.alexeilebedev.gles2;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
+// Wrapper for GLSurfaceView
 public class Glview extends GLSurfaceView {
     Home _home;
     Glrend _glrend;
@@ -19,14 +20,14 @@ public class Glview extends GLSurfaceView {
 
     public void autozoom() {
         if (_buttondown) {
-            _glrend._zoom *= 1.05f;
+            _glrend._zoom *= 1.02f;
         }
     }
 
     public void endzoom() {
         _glrend._zoom = 1.f;
     }
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         boolean invalidate = false;

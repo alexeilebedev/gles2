@@ -60,7 +60,7 @@ public class Glrend implements GLSurfaceView.Renderer {
         _mvpmat.setUnit();
         // aspectratio = wid/height
         // so for a screen thats 100 x 200 (vertical android), it's 0.5
-        //
+        // this is to compensate
         _mvpmat._v[0] *= 1.f / _zoom;
         _mvpmat._v[4+1] *= 1.f / (_zoom* _aspectratio);
         GLES20.glUseProgram(_prog);

@@ -1,5 +1,6 @@
-// what is this thing here
+// define attribute vertex position
 attribute vec4 vPosition;
 void main() {
+  // this is the output of the shader
   gl_Position = vPosition;
 }

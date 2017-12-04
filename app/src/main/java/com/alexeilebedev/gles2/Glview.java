@@ -1,37 +1,29 @@
 package com.alexeilebedev.gles2;
 
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 
 // Wrapper for GLSurfaceView
 public class Glview extends GLSurfaceView {
     Home _home;
-    Glrend _glrend;
+    Mandelrend _rend;
     boolean _buttondown = false;
 
     Glview(Home home) {
         super(home);
         _home = home;
         setEGLContextClientVersion(2);
-        _glrend = new Glrend(this);
-        setRenderer(_glrend);
+        _rend = new Mandelrend(this);
+        setRenderer(_rend);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-    public void autozoom() {
-        if (_buttondown) {
-            _glrend._zoom *= 1.02f;
-        }
-    }
-
-    public void endzoom() {
-        _glrend._zoom = 1.f;
-    }
-
     @Override
-    public boolean onTouchEvent(MotionEvent e) {
+    public boolean onTouchEvent(MotionEvent event) {
+        showEvent(event);
         boolean invalidate = false;
-        switch (e.getAction()) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 invalidate = true;
                 break;
@@ -42,7 +34,6 @@ public class Glview extends GLSurfaceView {
                 invalidate = true;
                 break;
             case MotionEvent.ACTION_UP:
-                endzoom();
                 _buttondown = false;
                 break;
         }
@@ -50,5 +41,24 @@ public class Glview extends GLSurfaceView {
             requestRender();
         }
         return true;
+    }
+
+    // map model point to screen
+    private String mapPoint(float x, float y) {
+        Vec4f v1 = new Vec4f(x,y,0,0);
+        _rend._zoom._mvpmat.leftMul(v1);
+        return String.format("x:%f  y:%f  screenx:%f  screeny:%f"
+                , x
+                , y
+                , v1._x*_rend._zoom._width
+                , v1._y*_rend._zoom._height);
+    }
+
+    private void showEvent(MotionEvent event) {
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+        _rend._zoom.updateMvp();
+        Log.d("MOTION", String.format("x:%d y:%d", x,y)
+                + "  " + mapPoint(_rend._zoom._x,_rend._zoom._y));
     }
 }

@@ -1,0 +1,21 @@
+
+// available variables:
+// gl_FragCoord
+// gl_PointCoord
+// gl_FrontFacing
+// gl_SampleID
+// gl_SamplePosition
+// gl_SampleMaskIn
+// gl_ClipDistance
+// gl_PrimitiveID
+// gl_Layer
+// gl_ViewportIndex
+
+
+// TODO:
+// drawing rectangle of unifom color
+// int mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+// GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+// float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
+// int mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+//

@@ -1,7 +1,6 @@
 precision highp float;
-uniform mat4 _mvpmat;
-// no default initializer for uniforms
 uniform int _maxiter;
+varying vec3 vCoord;
 
 // c: h,s,v
 vec3 hsv2rgb(vec3 c) {
@@ -10,16 +9,14 @@ vec3 hsv2rgb(vec3 c) {
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-// What happens when we multiply the gl_PointCoord by the matrix on the left???
-
 void main() {
-	vec2 p = (_mvpmat * vec4(gl_PointCoord,0,1)).xy;
+	vec2 p = vec2(vCoord.x,vCoord.y);
 	vec2 c = p;
 	vec3 color = vec3(0.0,0.0,0.0);
 	for(int i=0; i < _maxiter; i++){
 		p= vec2(p.x*p.x-p.y*p.y,2.0*p.x*p.y)+c;
 		if (dot(p,p)>4.0){
-			float f = clamp(1.f - float(i-_maxiter/4)/float(_maxiter), 0.f, 1.f);;
+			float f = clamp(1.f - float(i-_maxiter/4)/float(_maxiter), 0.f, 1.f);
 			color = vec3(f,f,f);
 			break;
 		}

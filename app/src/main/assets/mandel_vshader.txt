@@ -1,6 +1,7 @@
-// define attribute vertex position
+uniform mat4 _mvpmat;
 attribute vec4 vPosition;
+varying vec3 vCoord;
 void main() {
-  // this is the output of the shader
-  gl_Position = vPosition;
+    gl_Position = _mvpmat * vPosition;
+    vCoord = vec3(vPosition.x,vPosition.y,vPosition.z);
 }

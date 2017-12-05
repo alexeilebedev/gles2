@@ -1,5 +1,6 @@
 package com.alexeilebedev.gles2;
 
+// Static constants for asset files
 public class Assets {
     public static final String mandel_vshader = "mandel_vshader.txt";
     public static final String mandel_fshader = "mandel_fshader.txt";

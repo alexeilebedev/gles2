@@ -54,20 +54,25 @@ public class Mat4f {
         _v[11] += z;
     }
 
-    // result x = (vec.x * _v[0 ] + vec.y * _v[1 ] + vec.z * _v[2 ]) * x + _v[3 ]
-    // result y = (vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ]) * y + _v[7 ]
-    // result z = (vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10]) * z + _v[11]
+    // result x = (vec.x * _v[0 ] + vec.y * _v[1 ] + vec.z * _v[2 ] + _v[3 ]) * x
+    // result y = (vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ] + _v[7 ]) * y
+    // result z = (vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10] + _v[11]) * z
     // result w = vec.x * _v[12] + vec.y * _v[13] + vec.z * _v[14] + _v[15]
     void worldScale(float x, float y, float z) {
         _v[0 ] *= x;
         _v[1 ] *= x;
         _v[2 ] *= x;
+        _v[3 ] *= x;
+
         _v[4 ] *= y;
         _v[5 ] *= y;
         _v[6 ] *= y;
+        _v[7 ] *= y;
+
         _v[8 ] *= z;
         _v[9 ] *= z;
         _v[10] *= z;
+        _v[11] *= z;
     }
 
     // result x = vec.x * x * _v[0 ] + vec.y * y * _v[1 ] + vec.z * z * _v[2 ] + _v[3 ]

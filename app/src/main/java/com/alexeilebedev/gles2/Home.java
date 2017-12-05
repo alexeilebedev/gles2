@@ -12,8 +12,8 @@ public class Home extends AppCompatActivity {
     // clock task
     class Task extends TimerTask {
         @Override public void run() {
-            _glview.requestRender();
             if (_glview._buttondown) {
+                _glview.requestRender();
                 _glview._rend._zoom.zoom(1.02f);
             }
         }

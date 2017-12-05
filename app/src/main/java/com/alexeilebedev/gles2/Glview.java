@@ -4,24 +4,26 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.util.Arrays;
+
 // Wrapper for GLSurfaceView
 public class Glview extends GLSurfaceView {
     Home _home;
-    Mandelrend _rend;
+    Rend _rend;
     boolean _buttondown = false;
 
     Glview(Home home) {
         super(home);
         _home = home;
         setEGLContextClientVersion(2);
-        _rend = new Mandelrend(this);
+        _rend = new Rend(this);
         setRenderer(_rend);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        showEvent(event);
+        //showEvent(event);
         boolean invalidate = false;
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
@@ -58,7 +60,10 @@ public class Glview extends GLSurfaceView {
         int x = (int)event.getX();
         int y = (int)event.getY();
         _rend._zoom.updateMvp();
-        Log.d("MOTION", String.format("x:%d y:%d", x,y)
-                + "  " + mapPoint(_rend._zoom._x,_rend._zoom._y));
+        Log.d("MOTION"
+                , String.format("x:%d y:%d  centerx:%f  centery:%f  xvisi:%f  yvisi:%f"
+                    , x,y,_rend._zoom._x,_rend._zoom._y,_rend._zoom._xvisi,_rend._zoom._yvisi)
+                + "  " + mapPoint(_rend._zoom._x,_rend._zoom._y)
+                + "  mvpmat:" + Arrays.toString(_rend._zoom._mvpmat._v));
     }
 }

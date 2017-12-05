@@ -3,24 +3,23 @@ package com.alexeilebedev.gles2;
 // Compute a matrix _mvpmat so that circle centered at _x,_y with
 // radius _r fits within window _width,_height;
 // Radius is clipped to _rmin .. _rmax
+// Normalized device coordinates in OpenGL go from -1 to 1
 public class Zoom {
-    Bbox2f _bbox;
-    float _rmin=1e-6f, _rmax=10.f, _rdflt=0.5f;
-    float _x=0.5f, _y=0.5f, _r=_rdflt;
+    float _rmin=1e-6f, _rmax=10.f, _rdflt=1.8f;
+    float _x=-0.4f, _y=0.f, _r=_rdflt;
+    // actual amounts visible given current aspect ratio.
+    // if screen is rectangular, _xvisi,_yvisi are both equal to _r
+    // otherwise one of them (corresponding to the longer window side) is bigger
+    float _xvisi=0.5f,_yvisi=0.5f;
     Mat4f _mvpmat = new Mat4f();
     int _width, _height;
 
-    Zoom() {
-        _bbox=new Bbox2f(-1.f, -1.f, 1.f, 1.f);
-    }
-
     public void updateMvp() {
+        _xvisi = _width < _height ? _r : _r*_width/_height;
+        _yvisi = _width < _height ? _r*_height/_width : _r;
         _mvpmat.setUnit();
         _mvpmat.modelTranslate(-_x,-_y, 0.f);
-        float scale = 0.5f/_r;
-        float aspect = (float)_height / _width;
-        _mvpmat.modelScale(scale, scale*aspect, 1.f);
-        _mvpmat.worldTranslate(0.5f, 0.5f, 0.f);
+        _mvpmat.modelScale(1.f/_xvisi, 1.f/_yvisi, 1.f);
     }
 
     public void updateViewport(int width, int height) {

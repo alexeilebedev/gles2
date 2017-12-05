@@ -1,5 +1,6 @@
 package com.alexeilebedev.gles2;
 
+// 2d bbox
 public class Bbox2f {
     float _b,_l,_t,_r;
 

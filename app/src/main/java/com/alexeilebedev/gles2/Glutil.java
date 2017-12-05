@@ -10,7 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-// standard GLES utilities
+// Static GLES utilities
 public class Glutil {
     public static int compileShaderX(int type, String text) {
         int ret = GLES20.glCreateShader(type);

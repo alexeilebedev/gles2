@@ -7,7 +7,9 @@ import android.util.Log;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-// View renderer
+/**
+ * View renderer
+ */
 public class Rend implements GLSurfaceView.Renderer {
     Glview _view;
     Zoom _zoom = new Zoom();

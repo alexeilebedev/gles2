@@ -32,11 +32,17 @@ public class Glview extends GLSurfaceView {
             case MotionEvent.ACTION_BUTTON_PRESS:
                 break;
             case MotionEvent.ACTION_DOWN:
+                if (event.getY() > _rend._zoom._height*9/10 && event.getX() < _rend._zoom._width*1/10) {
+                    _rend._zoom.reset();
+                } else {
+                    _rend._zoom.setTargetCenterW(event.getX(),event.getY());
+                }
                 _buttondown = true;
                 invalidate = true;
                 break;
             case MotionEvent.ACTION_UP:
                 _buttondown = false;
+                invalidate = true;
                 break;
         }
         if (invalidate) {
@@ -48,7 +54,7 @@ public class Glview extends GLSurfaceView {
     // map model point to screen
     private String mapPoint(float x, float y) {
         Vec4f v1 = new Vec4f(x,y,0,0);
-        _rend._zoom._mvpmat.leftMul(v1);
+        _rend._zoom._mvpmat.transform(v1);
         return String.format("x:%f  y:%f  screenx:%f  screeny:%f"
                 , x
                 , y

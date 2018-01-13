@@ -11,10 +11,10 @@ public class Mandelprog  {
     int _vshader, _fshader, _prog;
     Zoom _zoom;
     static float _vs[] = {
-            -4.f,4.f,0.f,
-            -4.f,-4.f,0.f,
-            4.f,-4.f,0.f,
-            4.f,4.f,0.f
+            -10.f,10.f,0.f,
+            -10.f,-10.f,0.f,
+            10.f,-10.f,0.f,
+            10.f,10.f,0.f
     };
     FloatBuffer _vs_buf;
     Gridprog _gridprog;
@@ -36,7 +36,7 @@ public class Mandelprog  {
         int mat_handle = GLES20.glGetUniformLocation(_prog, "_mvpmat");
         GLES20.glUniformMatrix4fv(mat_handle, 1, true, _zoom._mvpmat._v, 0);
         int niter_handle = GLES20.glGetUniformLocation(_prog, "_maxiter");
-        GLES20.glUniform1i(niter_handle, 600);
+        GLES20.glUniform1i(niter_handle, 1000);
         GLES20.glEnableVertexAttribArray(pos_handle);
         int coords_per_vertex=3;
         int vertex_stride = 3*4;

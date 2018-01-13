@@ -15,6 +15,7 @@ public class Home extends AppCompatActivity {
             if (_glview._buttondown) {
                 _glview.requestRender();
                 _glview._rend._zoom.zoom(1.02f);
+                _glview._rend._zoom.animateCenter(0.1f);
             }
         }
     }

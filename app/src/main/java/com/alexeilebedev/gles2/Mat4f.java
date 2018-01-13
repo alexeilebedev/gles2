@@ -37,7 +37,7 @@ public class Mat4f {
     // result y = (vec.x + x) * _v[4 ] + (vec.y + y) * _v[5 ] + (vec.z + z) * _v[6 ] + _v[7 ]
     // result z = (vec.x + x) * _v[8 ] + (vec.y + y) * _v[9 ] + (vec.z + z) * _v[10] + _v[11]
     // result w = (vec.x + x) * _v[12] + (vec.y + y) * _v[13] + (vec.z + z) * _v[14] + _v[15]
-    void modelTranslate(float x, float y, float z) {
+    void translateBefore(float x, float y, float z) {
         _v[3 ] += x * _v[0 ] + y * _v[1 ] + z * _v[2 ];
         _v[7 ] += x * _v[4 ] + y * _v[5 ] + z * _v[6 ];
         _v[11] += x * _v[8 ] + y * _v[9 ] + z * _v[10];
@@ -48,7 +48,7 @@ public class Mat4f {
     // result y = vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ] + _v[7 ] + y
     // result z = vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10] + _v[11] + z
     // result w = vec.x * _v[12] + vec.y * _v[13] + vec.z * _v[14] + _v[15] + w
-    void worldTranslate(float x, float y, float z) {
+    void translateAfter(float x, float y, float z) {
         _v[3 ] += x;
         _v[7 ] += y;
         _v[11] += z;
@@ -58,7 +58,7 @@ public class Mat4f {
     // result y = (vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ] + _v[7 ]) * y
     // result z = (vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10] + _v[11]) * z
     // result w = vec.x * _v[12] + vec.y * _v[13] + vec.z * _v[14] + _v[15]
-    void worldScale(float x, float y, float z) {
+    void scaleAfter(float x, float y, float z) {
         _v[0 ] *= x;
         _v[1 ] *= x;
         _v[2 ] *= x;
@@ -79,7 +79,7 @@ public class Mat4f {
     // result y = vec.x * x * _v[4 ] + vec.y * y * _v[5 ] + vec.z * z * _v[6 ] + _v[7 ]
     // result z = vec.x * x * _v[8 ] + vec.y * y * _v[9 ] + vec.z * z * _v[10] + _v[11]
     // result w = vec.x * x * _v[12] + vec.y * y * _v[13] + vec.z * z * _v[14] + _v[15]
-    void modelScale(float x, float y, float z) {
+    void scaleBefore(float x, float y, float z) {
         _v[0 ] *= x;
         _v[4 ] *= x;
         _v[8 ] *= x;
@@ -94,7 +94,7 @@ public class Mat4f {
         _v[14] *= z;
     }
 
-    void leftMul(Vec4f vec) {
+    void transform(Vec4f vec) {
         float x = _v[0 ]*vec._x + _v[1 ]*vec._y + _v[2 ]*vec._z + _v[3 ]*vec._w;
         float y = _v[4 ]*vec._x + _v[5 ]*vec._y + _v[6 ]*vec._z + _v[7 ]*vec._w;
         float z = _v[8 ]*vec._x + _v[9 ]*vec._y + _v[10]*vec._z + _v[11]*vec._w;

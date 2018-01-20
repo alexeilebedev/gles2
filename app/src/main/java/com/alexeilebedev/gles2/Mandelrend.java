@@ -8,24 +8,24 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * View renderer
+ * View renderer -- mostly invoked in its own thread!
  */
-public class Rend implements GLSurfaceView.Renderer {
-    Glview _view;
+public class Mandelrend implements GLSurfaceView.Renderer {
+    Mandelview _mandelview;
     Zoom _zoom = new Zoom();
     Mandelprog _mandelprog;
     Gridprog _gridprog;
 
-    Rend(Glview view) {
-        _view=view;
+    Mandelrend(Mandelview mandelview) {
+        _mandelview = mandelview;
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 0.9f);
         try {
-            _mandelprog = new Mandelprog(_view._home, _zoom);
-            _gridprog = new Gridprog(_view._home, _zoom);
+            _mandelprog = new Mandelprog(_mandelview._home, _zoom);
+            _gridprog = new Gridprog(_mandelview._home, _zoom);
         } catch (RuntimeException ex) {
             Log.e("SHADER",ex.toString());
         }

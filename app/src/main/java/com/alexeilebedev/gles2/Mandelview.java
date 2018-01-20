@@ -5,20 +5,37 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 // Wrapper for GLSurfaceView
-public class Glview extends GLSurfaceView {
+public class Mandelview extends GLSurfaceView {
     Home _home;
-    Rend _rend;
+    Mandelrend _mandelrend;
     boolean _buttondown = false;
+    // clock task
+    class Task extends TimerTask {
+        @Override public void run() {
+            if (_buttondown) {
+                requestRender();
+                _mandelrend._zoom.zoom(1.02f);
+                _mandelrend._zoom.animateCenter(0.1f);
+            }
+        }
+    }
+    Task _task;
 
-    Glview(Home home) {
+    Mandelview(Home home) {
         super(home);
         _home = home;
         setEGLContextClientVersion(2);
-        _rend = new Rend(this);
-        setRenderer(_rend);
+        _mandelrend = new Mandelrend(this);
+        setRenderer(_mandelrend);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        Timer timer = new Timer(true);
+        _task=new Task();
+        // re-render every 50 milliseconds
+        timer.scheduleAtFixedRate(_task,0,20);
     }
 
     @Override
@@ -32,10 +49,10 @@ public class Glview extends GLSurfaceView {
             case MotionEvent.ACTION_BUTTON_PRESS:
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (event.getY() > _rend._zoom._height*9/10 && event.getX() < _rend._zoom._width*1/10) {
-                    _rend._zoom.reset();
+                if (event.getY() > _mandelrend._zoom._height*9/10 && event.getX() < _mandelrend._zoom._width*1/10) {
+                    _mandelrend._zoom.reset();
                 } else {
-                    _rend._zoom.setTargetCenterW(event.getX(),event.getY());
+                    _mandelrend._zoom.setTargetCenterW(event.getX(),event.getY());
                 }
                 _buttondown = true;
                 invalidate = true;
@@ -54,22 +71,22 @@ public class Glview extends GLSurfaceView {
     // map model point to screen
     private String mapPoint(float x, float y) {
         Vec4f v1 = new Vec4f(x,y,0,0);
-        _rend._zoom._mvpmat.transform(v1);
+        _mandelrend._zoom._mvpmat.transform(v1);
         return String.format("x:%f  y:%f  screenx:%f  screeny:%f"
                 , x
                 , y
-                , v1._x*_rend._zoom._width
-                , v1._y*_rend._zoom._height);
+                , v1._x* _mandelrend._zoom._width
+                , v1._y* _mandelrend._zoom._height);
     }
 
     private void showEvent(MotionEvent event) {
         int x = (int)event.getX();
         int y = (int)event.getY();
-        _rend._zoom.updateMvp();
+        _mandelrend._zoom.updateMvp();
         Log.d("MOTION"
                 , String.format("x:%d y:%d  centerx:%f  centery:%f  xvisi:%f  yvisi:%f"
-                    , x,y,_rend._zoom._x,_rend._zoom._y,_rend._zoom._xvisi,_rend._zoom._yvisi)
-                + "  " + mapPoint(_rend._zoom._x,_rend._zoom._y)
-                + "  mvpmat:" + Arrays.toString(_rend._zoom._mvpmat._v));
+                    , x,y, _mandelrend._zoom._x, _mandelrend._zoom._y, _mandelrend._zoom._xvisi, _mandelrend._zoom._yvisi)
+                + "  " + mapPoint(_mandelrend._zoom._x, _mandelrend._zoom._y)
+                + "  mvpmat:" + Arrays.toString(_mandelrend._zoom._mvpmat._v));
     }
 }

@@ -3,11 +3,16 @@ package com.alexeilebedev.gles2;
 import android.content.Context;
 import android.opengl.GLES20;
 
+import com.alexeilebedev.gles2.Assets;
+import com.alexeilebedev.gles2.Glutil;
+import com.alexeilebedev.gles2.Gridprog;
+import com.alexeilebedev.gles2.Zoom;
+
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 // Mandelbrot shader program
-public class Mandelprog  {
+public class Mandelprog {
     int _vshader, _fshader, _prog;
     Zoom _zoom;
     static float _vs[] = {

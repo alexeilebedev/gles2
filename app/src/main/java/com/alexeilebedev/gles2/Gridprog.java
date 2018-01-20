@@ -6,6 +6,9 @@ import java.nio.ShortBuffer;
 
 // Shader program to render a grid
 // (currently just crosshair)
+// 1. Create sprite superclass, with position & scale
+// and functions such as
+// static public Gridprog CreateGrid(
 public class Gridprog {
     int _vshader, _fshader, _prog;
     Zoom _zoom;

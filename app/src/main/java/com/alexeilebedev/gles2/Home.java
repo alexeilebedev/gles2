@@ -18,13 +18,9 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle in) {
         super.onCreate(in);
-        //if (in != null) {
-        //    _viewid = in.getInt("_viewid", _viewid);
-        //} else {
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            _viewid = sharedPref.getInt("_viewid", _viewid);
-            Log.w("onCreate", String.format("loading data  viewid:%d",_viewid));
-        //}
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        _viewid = sharedPref.getInt("_viewid", _viewid);
+        Log.w("onCreate", String.format("loading data  viewid:%d", _viewid));
         rebuildView();
     }
 

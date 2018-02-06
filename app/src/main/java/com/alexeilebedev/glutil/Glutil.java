@@ -12,6 +12,9 @@ import java.nio.ShortBuffer;
 
 // Static GLES utilities
 public class Glutil {
+    // compiler shader of type TYPE with text TEXT
+    // and return its id.
+    // on failure, exception is thrown
     public static int compileShaderX(int type, String text) {
         int ret = GLES20.glCreateShader(type);
         if (ret != 0) {
@@ -27,6 +30,8 @@ public class Glutil {
         return ret;
     }
 
+    // compile program with shaders VSHADER,FSHADER
+    // and return program id. throw exception on error
     public static int compileProgX(int vshader, int fshader) {
         int prog = GLES20.glCreateProgram();
         if (prog != 0) {
@@ -43,15 +48,23 @@ public class Glutil {
         return prog;
     }
 
-    public static String loadAsset(Context ctx, String filename) {
+    // load file named FILENAME using context CTX and return the resulting string
+    public static String loadAsset(Context ctx, String filename, String want_section) {
         BufferedReader reader = null;
+        String cur_section="";
         StringBuilder builder = new StringBuilder();
         try {
             reader = new BufferedReader(new InputStreamReader(ctx.getAssets().open(filename)));
             String line;
             while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append("\n");
+                if (cur_section.equals(want_section)) {
+                    builder.append(line);
+                    builder.append("\n");
+                }
+                int idx=line.indexOf("// section");
+                if (idx!=-1) {
+                    cur_section = line.substring(idx + 11,line.length()).trim();
+                }
             }
         } catch (Exception e) {
         }
@@ -64,6 +77,12 @@ public class Glutil {
         return builder.toString();
     }
 
+    // load file named FILENAME using context CTX and return the resulting string
+    public static String loadAsset(Context ctx, String filename) {
+        return loadAsset(ctx,filename,"");
+    }
+
+    // convert float array to float buffer
     public static FloatBuffer toFloatBuffer(float[] ary, FloatBuffer prev) {
         FloatBuffer ret=prev;
         if (ret == null) {
@@ -77,6 +96,7 @@ public class Glutil {
         return ret;
     }
 
+    // convert short array to short bufer
     public static ShortBuffer toShortBuffer(short[] ary, ShortBuffer prev) {
         ShortBuffer ret = prev;
         if (ret == null) {
@@ -90,6 +110,7 @@ public class Glutil {
         return ret;
     }
 
+    // draw triangles as specified in VBUF
     public static void drawTriangles(Vbuf7f vbuf) {
         // starting at current position...
         // give opengl a pointer to vertex attribute, consisting of 3 floats,
@@ -107,8 +128,21 @@ public class Glutil {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vbuf._n);
     }
 
+    // set current matrix to that provided by ZOOM
+    // ATTR is the name of the matrix attribute in GLES shaders of program PROG
     public static void setMatrix(int prog, Zoom zoom, String attr) {
         int mat_handle = GLES20.glGetUniformLocation(prog, attr);
         GLES20.glUniformMatrix4fv(mat_handle, 1, true, zoom._mvpmat._v, 0);
+    }
+
+    // create GLES program file file
+    // file must have lines named "// section fshader"
+    // and "// section vshader"
+    public static Glprog createProgFromFile(Context ctx, String filename) {
+        Glprog glprog = new Glprog();
+        glprog._vshader = Glutil.compileShaderX(GLES20.GL_VERTEX_SHADER, Glutil.loadAsset(ctx, filename, "vshader"));
+        glprog._fshader = Glutil.compileShaderX(GLES20.GL_FRAGMENT_SHADER, Glutil.loadAsset(ctx, filename, "fshader"));
+        glprog._prog = Glutil.compileProgX(glprog._vshader, glprog._fshader);
+        return glprog;
     }
 }

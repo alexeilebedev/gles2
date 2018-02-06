@@ -1,3 +1,16 @@
+// section vshader
+
+uniform mat4 _mvpmat;
+attribute vec4 vPosition;
+varying vec3 vCoord;
+void main() {
+    gl_Position = _mvpmat * vPosition;
+    vCoord = vec3(vPosition.x,vPosition.y,vPosition.z);
+}
+
+
+// section fshader
+
 precision highp float;
 uniform int _maxiter;
 varying vec3 vCoord;

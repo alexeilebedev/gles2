@@ -2,6 +2,7 @@ package com.alexeilebedev.gles2;
 import android.content.Context;
 import android.opengl.GLES20;
 
+import com.alexeilebedev.glutil.Glprog;
 import com.alexeilebedev.glutil.Glutil;
 import com.alexeilebedev.glutil.Zoom;
 
@@ -14,7 +15,7 @@ import java.nio.ShortBuffer;
 // and functions such as
 // static public Gridprog CreateGrid(
 public class Gridprog {
-    int _vshader, _fshader, _prog;
+    Glprog _glprog;
     Zoom _zoom;
     static float _vs[] = {
             -2.0f,  0.0f, 0.0f, // left
@@ -30,18 +31,16 @@ public class Gridprog {
         _zoom = zoom;
         _lines_buf = Glutil.toShortBuffer(_lines, _lines_buf);
         _vs_buf = Glutil.toFloatBuffer(_vs, _vs_buf);
-        _vshader = Glutil.compileShaderX(GLES20.GL_VERTEX_SHADER, Glutil.loadAsset(ctx, Assets.plain_vshader));
-        _fshader = Glutil.compileShaderX(GLES20.GL_FRAGMENT_SHADER, Glutil.loadAsset(ctx, Assets.plain_fshader));
-        _prog = Glutil.compileProgX(_vshader, _fshader);
+        _glprog = Glutil.createProgFromFile(ctx,"plain.shader");
     }
 
     // draw a grid -- what size? where?
     public void draw() {
-        GLES20.glUseProgram(_prog);
-        int pos_handle = GLES20.glGetAttribLocation(_prog, "vPosition");
-        int col_handle = GLES20.glGetUniformLocation(_prog, "vColor");
+        GLES20.glUseProgram(_glprog._prog);
+        int pos_handle = GLES20.glGetAttribLocation(_glprog._prog, "vPosition");
+        int col_handle = GLES20.glGetUniformLocation(_glprog._prog, "vColor");
         GLES20.glUniform4f(col_handle, 1.f, 0.f, 0.f, 1.f);
-        Glutil.setMatrix(_prog,_zoom, "_mvpmat");
+        Glutil.setMatrix(_glprog._prog,_zoom, "_mvpmat");
         GLES20.glEnableVertexAttribArray(pos_handle);
         int coords_per_vertex=3;
         int vertex_stride = 3*4;

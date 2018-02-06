@@ -1,4 +1,4 @@
-package com.alexeilebedev.gles2;
+package com.alexeilebedev.glutil;
 
 // 2d bbox
 public class Bbox2f {

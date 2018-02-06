@@ -50,6 +50,8 @@ public class Home extends AppCompatActivity {
             _glview = new Mandelview(this);
         } else if (_viewid == R.id.clock) {
             _glview = new Clockview(this);
+        } else if (_viewid == R.id.noise) {
+            _glview = new Noiseview(this);
         } else {
             _glview = new Clockview(this);
         }
@@ -68,6 +70,7 @@ public class Home extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.mandelbrot: _viewid = item.getItemId(); ret=true; break;
             case R.id.clock: _viewid=item.getItemId(); ret=true; break;
+            case R.id.noise: _viewid=item.getItemId(); ret=true; break;
             default: return super.onOptionsItemSelected(item);
         }
         if (ret) {
@@ -81,6 +84,7 @@ public class Home extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.mandelbrot).setChecked(R.id.mandelbrot == _viewid);
         menu.findItem(R.id.clock).setChecked(R.id.clock == _viewid);
+        menu.findItem(R.id.noise).setChecked(R.id.noise == _viewid);
         return true;
     }
 

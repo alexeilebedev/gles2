@@ -6,6 +6,10 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.alexeilebedev.glutil.Glutil;
+import com.alexeilebedev.glutil.Vec4f;
+import com.alexeilebedev.glutil.Zoom;
+
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
@@ -124,8 +128,7 @@ public class Mandelview extends GLSurfaceView {
         public void draw() {
             GLES20.glUseProgram(_prog);
             int pos_handle = GLES20.glGetAttribLocation(_prog, "vPosition");
-            int mat_handle = GLES20.glGetUniformLocation(_prog, "_mvpmat");
-            GLES20.glUniformMatrix4fv(mat_handle, 1, true, _zoom._mvpmat._v, 0);
+            Glutil.setMatrix(_prog,_zoom, "_mvpmat");
             int niter_handle = GLES20.glGetUniformLocation(_prog, "_maxiter");
             GLES20.glUniform1i(niter_handle, 1000);
             GLES20.glEnableVertexAttribArray(pos_handle);

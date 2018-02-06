@@ -1,4 +1,4 @@
-package com.alexeilebedev.gles2;
+package com.alexeilebedev.glutil;
 
 // 4x4 matrix of floats
 // The matrix is a row matrix, the first row is the transformation for vertex x, etc.
@@ -19,9 +19,9 @@ package com.alexeilebedev.gles2;
 // model -> world -> normalize device -> window ?
 
 public class Mat4f {
-    float[] _v = new float[16];
+    public float[] _v = new float[16];
 
-    Mat4f() {
+    public Mat4f() {
     }
 
     public void setUnit() {
@@ -37,7 +37,7 @@ public class Mat4f {
     // result y = (vec.x + x) * _v[4 ] + (vec.y + y) * _v[5 ] + (vec.z + z) * _v[6 ] + _v[7 ]
     // result z = (vec.x + x) * _v[8 ] + (vec.y + y) * _v[9 ] + (vec.z + z) * _v[10] + _v[11]
     // result w = (vec.x + x) * _v[12] + (vec.y + y) * _v[13] + (vec.z + z) * _v[14] + _v[15]
-    void translateBefore(float x, float y, float z) {
+    public void translateBefore(float x, float y, float z) {
         _v[3 ] += x * _v[0 ] + y * _v[1 ] + z * _v[2 ];
         _v[7 ] += x * _v[4 ] + y * _v[5 ] + z * _v[6 ];
         _v[11] += x * _v[8 ] + y * _v[9 ] + z * _v[10];
@@ -48,7 +48,7 @@ public class Mat4f {
     // result y = vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ] + _v[7 ] + y
     // result z = vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10] + _v[11] + z
     // result w = vec.x * _v[12] + vec.y * _v[13] + vec.z * _v[14] + _v[15] + w
-    void translateAfter(float x, float y, float z) {
+    public void translateAfter(float x, float y, float z) {
         _v[3 ] += x;
         _v[7 ] += y;
         _v[11] += z;
@@ -58,7 +58,7 @@ public class Mat4f {
     // result y = (vec.x * _v[4 ] + vec.y * _v[5 ] + vec.z * _v[6 ] + _v[7 ]) * y
     // result z = (vec.x * _v[8 ] + vec.y * _v[9 ] + vec.z * _v[10] + _v[11]) * z
     // result w = vec.x * _v[12] + vec.y * _v[13] + vec.z * _v[14] + _v[15]
-    void scaleAfter(float x, float y, float z) {
+    public void scaleAfter(float x, float y, float z) {
         _v[0 ] *= x;
         _v[1 ] *= x;
         _v[2 ] *= x;
@@ -79,7 +79,7 @@ public class Mat4f {
     // result y = vec.x * x * _v[4 ] + vec.y * y * _v[5 ] + vec.z * z * _v[6 ] + _v[7 ]
     // result z = vec.x * x * _v[8 ] + vec.y * y * _v[9 ] + vec.z * z * _v[10] + _v[11]
     // result w = vec.x * x * _v[12] + vec.y * y * _v[13] + vec.z * z * _v[14] + _v[15]
-    void scaleBefore(float x, float y, float z) {
+    public void scaleBefore(float x, float y, float z) {
         _v[0 ] *= x;
         _v[4 ] *= x;
         _v[8 ] *= x;
@@ -94,7 +94,7 @@ public class Mat4f {
         _v[14] *= z;
     }
 
-    void transform(Vec4f vec) {
+    public void transform(Vec4f vec) {
         float x = _v[0 ]*vec._x + _v[1 ]*vec._y + _v[2 ]*vec._z + _v[3 ]*vec._w;
         float y = _v[4 ]*vec._x + _v[5 ]*vec._y + _v[6 ]*vec._z + _v[7 ]*vec._w;
         float z = _v[8 ]*vec._x + _v[9 ]*vec._y + _v[10]*vec._z + _v[11]*vec._w;

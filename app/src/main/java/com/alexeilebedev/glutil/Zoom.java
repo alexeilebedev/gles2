@@ -1,21 +1,25 @@
-package com.alexeilebedev.gles2;
+package com.alexeilebedev.glutil;
 
-import android.util.Log;
+import com.alexeilebedev.glutil.Mat4f;
 
 // Compute a matrix _mvpmat so that circle centered at _x,_y with
 // radius _r fits within window _width,_height;
 // Radius is clipped to _rmin .. _rmax
 // Normalized device coordinates in OpenGL go from -1 to 1
+// window size is updated with updateViewport; zoom is recentered with
+// setXYR.
+// Simple animation is supported -- target x,y cam be stored separately
+// from x,y and animated to with animateCenter
 public class Zoom {
-    float _rmin=1e-6f, _rmax=10.f, _rdflt=1.8f, _xdflt=-0.4f, _ydflt=0.f;
-    float _x=_xdflt, _y=_ydflt, _r=_rdflt;
-    float _targetx=_x, _targety=_y;
+    public float _rmin=1e-6f, _rmax=10.f, _rdflt=1.8f, _xdflt=-0.4f, _ydflt=0.f;
+    public float _x=_xdflt, _y=_ydflt, _r=_rdflt;
+    public float _targetx=_x, _targety=_y;
     // actual amounts visible given current aspect ratio.
     // if screen is rectangular, _xvisi,_yvisi are both equal to _r
     // otherwise one of them (corresponding to the longer window side) is bigger
-    float _xvisi=0.5f,_yvisi=0.5f;
-    Mat4f _mvpmat = new Mat4f();
-    int _width, _height;
+    public float _xvisi=0.5f,_yvisi=0.5f;
+    public Mat4f _mvpmat = new Mat4f();
+    public int _width, _height;
 
     public void updateMvp() {
         _xvisi = _width < _height ? _r : _r*_width/_height;
@@ -28,6 +32,12 @@ public class Zoom {
     public void updateViewport(int width, int height) {
         _width=width;
         _height=height;
+    }
+
+    public void setXYR(float x, float y, float r) {
+        _x=x;
+        _y=y;
+        _r=r;
     }
 
     public void zoom(float f) {
@@ -65,4 +75,5 @@ public class Zoom {
         _targetx = screenToX(x);
         _targety = screenToY(y);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.alexeilebedev.gles2;
+package com.alexeilebedev.glutil;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -88,5 +88,27 @@ public class Glutil {
         ret.put(ary);
         ret.position(0);
         return ret;
+    }
+
+    public static void drawTriangles(Vbuf7f vbuf) {
+        // starting at current position...
+        // give opengl a pointer to vertex attribute, consisting of 3 floats,
+        // that will be bound to 'varying attribute' _pos_attr
+        // the attribute is a float with stride 28 (since 7 floats per vertex...)
+        vbuf._buf.position(0);
+        GLES20.glVertexAttribPointer(vbuf._pos_attr, 3, GLES20.GL_FLOAT, false, vbuf._stride, vbuf._buf);
+        GLES20.glEnableVertexAttribArray(vbuf._pos_attr);
+        // same as above, but for colors
+        vbuf._buf.position(3);
+        // what does 'normalized' mean for colors???
+        GLES20.glVertexAttribPointer(vbuf._color_attr, 4, GLES20.GL_FLOAT, false, vbuf._stride, vbuf._buf);
+        GLES20.glEnableVertexAttribArray(vbuf._color_attr);
+        // draw 3 vertices
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vbuf._n);
+    }
+
+    public static void setMatrix(int prog, Zoom zoom, String attr) {
+        int mat_handle = GLES20.glGetUniformLocation(prog, attr);
+        GLES20.glUniformMatrix4fv(mat_handle, 1, true, zoom._mvpmat._v, 0);
     }
 }

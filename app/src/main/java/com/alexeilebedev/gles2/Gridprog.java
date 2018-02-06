@@ -1,6 +1,10 @@
 package com.alexeilebedev.gles2;
 import android.content.Context;
 import android.opengl.GLES20;
+
+import com.alexeilebedev.glutil.Glutil;
+import com.alexeilebedev.glutil.Zoom;
+
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
@@ -31,13 +35,13 @@ public class Gridprog {
         _prog = Glutil.compileProgX(_vshader, _fshader);
     }
 
+    // draw a grid -- what size? where?
     public void draw() {
         GLES20.glUseProgram(_prog);
         int pos_handle = GLES20.glGetAttribLocation(_prog, "vPosition");
-        int mat_handle = GLES20.glGetUniformLocation(_prog, "_mvpmat");
         int col_handle = GLES20.glGetUniformLocation(_prog, "vColor");
         GLES20.glUniform4f(col_handle, 1.f, 0.f, 0.f, 1.f);
-        GLES20.glUniformMatrix4fv(mat_handle, 1, true, _zoom._mvpmat._v, 0);
+        Glutil.setMatrix(_prog,_zoom, "_mvpmat");
         GLES20.glEnableVertexAttribArray(pos_handle);
         int coords_per_vertex=3;
         int vertex_stride = 3*4;

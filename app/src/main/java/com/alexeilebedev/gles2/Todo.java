@@ -10,5 +10,11 @@ package com.alexeilebedev.gles2;
 
 // Explore procedural menus -- so that we don't have to deal with the menu xml file.
 
+// Define an implicit grid.
+
+// Flatten java
+// Switch from android studio to emacs.
+// Define commands to compile/run programs on android
+
 public class Todo {
 }

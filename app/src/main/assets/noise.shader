@@ -13,12 +13,11 @@ void main() {
 uniform float  _seed;
 varying vec3 _coord;
 float rand(vec2 co) {
-    return abs(sin(co.x/20.0)*cos(co.y/20.0));
-    //return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return 0.5 + 0.5*sin(co.x*600.0)*cos(co.y*600.0);
 }
 void main() {
-    gl_FragColor.r = rand(gl_FragCoord.xy);
-    gl_FragColor.g = gl_FragColor.r;
-    gl_FragColor.b = gl_FragColor.r;
+    gl_FragColor.r = rand(_coord.xy);
+    gl_FragColor.g = 0.5 + 0.5*sin(gl_PointCoord.x*4.0+_seed);
+    gl_FragColor.b = 0.5 + 0.5*cos(gl_PointCoord.y*4.0+_seed);
     gl_FragColor.a = 1.0;
 }

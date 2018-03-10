@@ -31,6 +31,7 @@ sub gradlecmd($) {
     my $cmd=$_[0];
     $APP_HOME=getcwd;
     $classpath="$APP_HOME/gradle/wrapper/gradle-wrapper.jar";
+    $ENV{CLASSPATH}="$classpath";
     $ENV{GRADLE_OPTS}="\"-Xdock:name=Gradle\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\"";
-    syscmd("java", "-Dorg.gradle.appname=gradlew", "-classpath", "$classpath", "org.gradle.wrapper.GradleWrapperMain", $cmd);
+    syscmd("java", "-Dorg.gradle.appname=gradlew", "-classpath", "$ENV{CLASSPATH}", "org.gradle.wrapper.GradleWrapperMain", $cmd);
 }
